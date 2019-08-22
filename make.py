@@ -107,7 +107,7 @@ if __name__ == '__main__':
                     f.write('\n')
 
                     f.write("∥ Resources:\n")
-                    f.write(" 🞄 final image: https://raw.githubusercontent.com/PixelZerg/MathsVids/master/{}\n".format(
+                    f.write(" 🞄 final image: https://pixelzerg.github.io/MathsVids/{}\n".format(
                         chapter+"/"+part+".png"
                     ))
                     f.write('\n')
