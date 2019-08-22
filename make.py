@@ -110,6 +110,7 @@ if __name__ == '__main__':
                     f.write(" 🞄 final image: https://pixelzerg.github.io/MathsVids/{}\n".format(
                         chapter+"/"+part+".png"
                     ))
+                    f.write(" 🞄 GitHub repo: https://github.com/PixelZerg/MathsVids\n")
                     f.write('\n')
 
                     f.write("∥ Software used:\n")
