@@ -58,6 +58,8 @@ def choose_song(length):
 
 
 if __name__ == '__main__':
+    generated_imgs = []
+
     for chapter in [x for x in os.listdir('.')
                     if os.path.isdir(x)
                        and not x == 'res'
@@ -69,6 +71,10 @@ if __name__ == '__main__':
             # generate image
             if not os.path.isfile(path + ".png") and os.path.isfile(path + ".xopp"):
                 run("xournalpp -i {} {}".format(path + ".png", path + ".xopp"))
+                generated_imgs.append("{} {}".format(
+                    chapter.replace('_',' '),
+                    part
+                ).title())
 
             # crop image + gen thumbnail
             if os.path.isfile(path + ".png") and not os.path.isfile(path + ".thumb.jpg"):
@@ -125,3 +131,17 @@ if __name__ == '__main__':
                     f.write(" 🞄 {} - {}: ".format(song[:dash_pos], song[dash_pos+1:].replace('-', ' ')).title() +
                             "{}\n".format(credit_dict[song]))
                     f.write('\n')
+
+    if len(generated_imgs) > 0:
+        msg = ''
+        if len(generated_imgs) == 1:
+            msg += "added: {}".format(generated_imgs[0])
+        else:
+            msg += "added files\n"
+            for generated_img in generated_imgs:
+                msg += "{}\n".format(generated_img)
+
+        run("git add .")
+        run("git commit -m \"{}\"".format(msg))
+        run("git push origin master")
+
