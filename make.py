@@ -5,6 +5,7 @@ import os
 from PIL import Image, ImageChops
 
 FADE_DURATION = 3
+CUT_AMOUNT = 1
 
 credit_dict = {
     "animenz": "https://www.youtube.com/user/Animenzzz",
@@ -75,10 +76,15 @@ if __name__ == '__main__':
 
             # gen video
             if os.path.isfile(path + ".ogv") and not os.path.isfile(path + ".mp4"):
-                run("ffmpeg -y -i {} -an -filter:v crop=1840:855:40:145 -c:v libx264 {}".format(
+                length = get_length(path+".ogv")
+
+                run("ffmpeg -y -i {} -ss {} -t {} -an -filter:v crop=1840:855:40:145 -c:v libx264 {}".format(
                     path + ".ogv",
+                    CUT_AMOUNT,
+                    length - CUT_AMOUNT*2,
                     path + ".tmp.mp4"
                 ))
+
                 length = get_length(path+".tmp.mp4")
                 chosen_song = choose_song(length)
                 run("ffmpeg -y -i {0} -stream_loop -1 -i {1} "
@@ -100,9 +106,11 @@ if __name__ == '__main__':
                     ).title())
                     f.write('\n')
 
-                    # f.write("∥ Resources:\n")
-                    # f.write(" 🞄 final image: https://ffmpeg.org/\n")
-                    # f.write('\n')
+                    f.write("∥ Resources:\n")
+                    f.write(" 🞄 final image: https://raw.githubusercontent.com/PixelZerg/MathsVids/master/{}\n".format(
+                        chapter+"/"+part+".png"
+                    ))
+                    f.write('\n')
 
                     f.write("∥ Software used:\n")
                     f.write(" 🞄 xournal++: https://github.com/xournalpp/xournalpp/\n")
@@ -116,7 +124,3 @@ if __name__ == '__main__':
                     f.write(" 🞄 {} - {}: ".format(song[:dash_pos], song[dash_pos+1:].replace('-', ' ')).title() +
                             "{}\n".format(credit_dict[song]))
                     f.write('\n')
-
-
-# ffmpeg -i 1.1.ogv -an -filter:v crop=1840:855:40:145 -c:v libx264 tmp.mp4
-# ffmpeg -i tmp.mp4 -stream_loop -1 -i ../res/background.wav -fflags +shortest -max_interleave_delta 50000 -c:v copy -c:a aac -shortest out.mp4
