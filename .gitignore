@@ -1,0 +1,16 @@
+*.xopp
+
+*.ogv
+*.mkv
+*.mp4
+*.mov
+*.avi
+*.flv
+*.mpg
+
+*.thumb.jpg
+*.desc.txt
+
+__pycache__/
+.idea/
+music/
