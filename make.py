@@ -84,7 +84,7 @@ if __name__ == '__main__':
             if os.path.isfile(path + ".ogv") and not os.path.isfile(path + ".mp4"):
                 length = get_length(path+".ogv")
 
-                run("ffmpeg -y -i {} -ss {} -t {} -an -filter:v crop=1840:855:40:145 -c:v libx264 {}".format(
+                run("ffmpeg -y -i {} -ss {} -t {} -an -filter:v crop=1840:855:40:145 -c:v libx264 -crf 18 {}".format(
                     path + ".ogv",
                     CUT_AMOUNT,
                     length - CUT_AMOUNT*2,
