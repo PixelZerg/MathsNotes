@@ -4,6 +4,7 @@ import subprocess
 import os
 from PIL import Image, ImageChops
 
+VIDEO_MODE = False
 FADE_DURATION = 3
 CUT_AMOUNT = 1
 
@@ -40,10 +41,11 @@ def gen_imgs(path, padding=50):
     padded_im.paste(img, (padding // 2, padding // 2))
     padded_im.save(path)
 
-    padded_im.crop((0, 0, padded_im.size[0], padded_im.size[0] // 16 * 9)).save(
-        os.path.splitext(path)[0] + ".thumb.jpg",
-        optimize=True, quality=80
-    )
+    if VIDEO_MODE:
+        padded_im.crop((0, 0, padded_im.size[0], padded_im.size[0] // 16 * 9)).save(
+            os.path.splitext(path)[0] + ".thumb.jpg",
+            optimize=True, quality=80
+        )
 
 def choose_song(length):
     songs = []
@@ -81,7 +83,7 @@ if __name__ == '__main__':
                 gen_imgs(path + ".png")
 
             # gen video
-            if os.path.isfile(path + ".ogv") and not os.path.isfile(path + ".mp4"):
+            if VIDEO_MODE and os.path.isfile(path + ".ogv") and not os.path.isfile(path + ".mp4"):
                 length = get_length(path+".ogv")
 
                 run("ffmpeg -y -i {} -ss {} -t {} -an -filter:v crop=1840:855:40:145 -c:v libx264 -crf 18 {}".format(
